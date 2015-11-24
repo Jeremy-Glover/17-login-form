@@ -1,3 +1,5 @@
+import LoginAttempt from '../models/login';
+
 export default Backbone.View.extend({
 
   events: {
@@ -7,25 +9,14 @@ export default Backbone.View.extend({
       var username = this.$el.find('#username').val();
       var password = this.$el.find('#password').val();
 
-      var userOptions =
-        [
-          {user: 'aaron@theironyard.com', password: 'password123'},
-          {user: 'admin@google.com', password: 'pandas'},
-          {user: 'jeremyglover33@gmail.com', password: 'honeycrisp'}
-        ];
+      var attempt = new LoginAttempt({username, password});
 
-      var foundMatch = userOptions.reduce(function(carry, curr) {
-          if (curr.username === user && curr.password === password) {
-            return true;
-          }
-          return carry;
-        }, false);
+      var errorMessage = attempt.getValidationErrors();
 
-      if (foundMatch === true) {
-        alert('You have successfully logged into Ironyard');
-        window.location = 'http://theironyard.com';
+      if (errorMessage) {
+        alert(errorMessage);
       } else {
-        alert('Login Attempt Fail: Did not match username and/or password');
+        window.location = 'http://theironyard.com';
       }
     },
   },
