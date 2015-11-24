@@ -1,0 +1,46 @@
+export default Backbone.Model.extend({
+
+  options: [
+    {user: 'aaron@theironyard.com', password: 'password123'},
+    {user: 'admin@google.com', password: 'pandas'},
+    {user: 'jeremyglover33@gmail.com', password: 'honeycrisp'},
+  ],
+
+  getValidationErrors() {
+    var username = this.get('username');
+    var password = this.get('password');
+
+    var usernameExists = this.options.reduce(function(carry, curr) {
+        if (curr.user === username) {
+          return true;
+        }
+
+        return carry;
+      }, false);
+
+    var passwordExists = this.options.reduce(function(carry, curr) {
+        if (curr.password === password) {
+          return true;
+        }
+
+        return carry;
+      }, false);
+
+    if (username === '') {
+      return 'Please enter an email address before logging in';
+    }
+
+    if (password === '') {
+      return 'Please enter a password before logging in';
+    }
+
+    if (!usernameExists) {
+      return 'Your user was not found';
+    }
+
+    if (!passwordExists) {
+      return 'The Password you entered is incorrect';
+    }
+
+  },
+});
